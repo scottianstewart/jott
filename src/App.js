@@ -30,6 +30,7 @@ class App extends Component {
     let notes = JSON.parse(retrievedData);
     notes.push(this.state.value)
     localStorage.setItem("notes", JSON.stringify(notes));
+    this.setState({value: ''})
     event.preventDefault();
   }
 
@@ -37,6 +38,7 @@ class App extends Component {
     let retrievedData = localStorage.getItem("notes");
     let notesArray = JSON.parse(retrievedData);
     let notes = [];
+    localStorage.setItem("notes", JSON.stringify(notes));
     Object.entries(notesArray).forEach(
       ([key, value]) => value !== null ? notes.push(<Note key={key} note={value}/>) : null
     );
