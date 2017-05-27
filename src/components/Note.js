@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 
-class App extends Component {
+class Note extends Component {
 
   render() {
 
     return (
-      <h1>Jott</h1>
+      <h1>Note</h1>
     );
   }
 }
 
-export default App;
+export default Note;
