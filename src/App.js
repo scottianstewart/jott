@@ -43,7 +43,7 @@ class App extends Component {
       <div>
         <h1>Jott</h1>
         <form ref="notepad" onSubmit={this.createNote}>
-          <textarea type="text" ref="note" placeholder="hi"/>
+          <textarea type="text" ref="note" placeholder="Start Typing..."/>
           <button type="submit">Submit</button>
         </form>
         {Object.keys(this.state.notes).map(this.renderNotes)}
