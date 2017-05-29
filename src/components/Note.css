@@ -1,0 +1,67 @@
+.note {
+  width: 600px;
+  height: 80px;
+  border: 0px;
+  font-family: 'Roboto', sans-serif;
+  padding: 15px;
+  font-size: 16px;
+  z-index: 2;
+  color: #484a4c;
+  display: block;
+  background-color: white;
+  margin-top: 40px;
+}
+
+span {
+  position: absolute;
+  border: none;
+  font-size: 13px;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 1px;
+  color: #484a4c;
+  padding: 20px 32px;
+  margin-right: 100px;
+  margin-bottom: 500px;
+}
+
+.edit {
+  position: absolute;
+  border: none;
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 2px;
+  color: black;
+  padding: 6px 16px;
+  margin-left: 460px;
+  margin-bottom: 250px;
+  display: block;
+  background-color: #F2F1EF;
+  color: white;
+}
+
+.delete {
+  position: absolute;
+  border: none;
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 2px;
+  color: black;
+  padding: 6px 16px;
+  margin-left: 530px;
+  margin-bottom: 250px;
+  display: block;
+  background-color: #F2F1EF;
+  color: white;
+}
+
+p {
+  position: relative;
+  top: 30px;
+  left: 20px;
+}
+
+.fixed {
+  position: relative;
+  bottom: 60px;
+  right: 20px;
+}

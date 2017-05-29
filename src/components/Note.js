@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './Note.css';
 
 class Note extends Component {
 
@@ -8,16 +9,19 @@ class Note extends Component {
 
     return (
       <div>
-        <div>
-          <span>May 26, 2017</span>
-          <button>edit</button>
-          <button>delete</button>
-        </div>
-        {note}
+          <div className="note">
+              <p>{note}</p>
+              <div className="fixed">
+              <span>May 28, 2017</span>
+              <button className="edit">edit</button>
+              <button className="delete">delete</button>
+             </div>
+          </div>
       </div>
     );
   }
 }
+
 
 Note.propTypes = {
   note: PropTypes.string,

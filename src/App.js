@@ -38,17 +38,19 @@ class App extends Component {
     let retrievedData = localStorage.getItem("notes");
     let notesArray = JSON.parse(retrievedData);
     let notes = [];
-    localStorage.setItem("notes", JSON.stringify(notes));
     Object.entries(notesArray).forEach(
       ([key, value]) => value !== null ? notes.push(<Note key={key} note={value}/>) : null
     );
 
     return (
-      <div>
-        <h1>Jott</h1>
+      <div className="top">
+        <h1>JOTT</h1>
         <form onSubmit={this.handleSubmit}>
+         <div className="text">
           <textarea value={this.state.value} onChange={this.handleChange} />
           <input type="submit" value="Submit" />
+         </div>
+         <div className="middle">Notes</div>
         </form>
         {notes}
       </div>
