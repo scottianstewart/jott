@@ -54,8 +54,8 @@ class App extends Component {
   }
 
   removeNote(key) {
-    this.state.notes[key] = null;
-    this.setState({ notes : this.state.notes })
+    const notes = Object.assign({}, this.state.notes, { [key]: null })
+    this.setState({ notes })
   }
 
   renderNotes(key) {
@@ -84,7 +84,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-  // localStorage.setItem("notes", JSON.stringify(notes));
-  // let retrievedData = localStorage.getItem("notes");
