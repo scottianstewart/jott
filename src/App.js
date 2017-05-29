@@ -44,9 +44,11 @@ class App extends Component {
 
   createNote(event) {
     event.preventDefault();
+    let timestamp = (new Date()).getTime();
 
     var note = {
       note : this.refs.note.value,
+      timestamp : timestamp,
     }
 
     this.addNote(note)
