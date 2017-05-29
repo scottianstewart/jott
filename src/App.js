@@ -3,57 +3,57 @@ import Note from './components/Note.js';
 import './App.css';
 
 class App extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      value: 'Start writing your note',
+      notes: {},
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.createNote = this.createNote.bind(this);
+    this.renderNotes = this.renderNotes.bind(this);
   }
 
-  componentDidMount() {
-    let notes = [];
-    localStorage.setItem("notes", JSON.stringify(notes));
+  addNote(note) {
+    let timestamp = (new Date()).getTime();
+
+    const notes = Object.assign({}, this.state.notes, { ['note-' + timestamp]: note })
+    this.setState({ notes })
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
-
-  handleSubmit(event) {
-    this.setState({value: event.target.value});
-    let retrievedData = localStorage.getItem("notes");
-    let notes = JSON.parse(retrievedData);
-    notes.push(this.state.value)
-    localStorage.setItem("notes", JSON.stringify(notes));
-    this.setState({value: ''})
+  createNote(event) {
     event.preventDefault();
+
+    var note = {
+      note : this.refs.note.value,
+    }
+
+    this.addNote(note)
+    this.refs.notepad.reset();
+  }
+
+  renderNotes(key) {
+    return (
+      <Note key={key} index={key} details={this.state.notes[key]}/>
+    )
   }
 
   render() {
-    let retrievedData = localStorage.getItem("notes");
-    let notesArray = JSON.parse(retrievedData);
-    let notes = [];
-    localStorage.setItem("notes", JSON.stringify(notes));
-    Object.entries(notesArray).forEach(
-      ([key, value]) => value !== null ? notes.push(<Note key={key} note={value}/>) : null
-    );
-
     return (
       <div>
         <h1>Jott</h1>
-        <form onSubmit={this.handleSubmit}>
-          <textarea value={this.state.value} onChange={this.handleChange} />
-          <input type="submit" value="Submit" />
+        <form ref="notepad" onSubmit={this.createNote}>
+          <textarea type="text" ref="note" placeholder="hi"/>
+          <button type="submit">Submit</button>
         </form>
-        {notes}
+        {Object.keys(this.state.notes).map(this.renderNotes)}
       </div>
     );
   }
 }
 
 export default App;
+
+
+  // localStorage.setItem("notes", JSON.stringify(notes));
+  // let retrievedData = localStorage.getItem("notes");

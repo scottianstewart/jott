@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class Note extends Component {
 
   render() {
-    const { note } = this.props;
+    const { note } = this.props.details;
 
     return (
       <div>
@@ -20,7 +20,7 @@ class Note extends Component {
 }
 
 Note.propTypes = {
-  note: PropTypes.string,
+  details: PropTypes.object,
 }
 
 export default Note;
