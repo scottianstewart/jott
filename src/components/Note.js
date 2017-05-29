@@ -5,13 +5,14 @@ class Note extends Component {
 
   render() {
     const { note } = this.props.details;
+    const { removeNote } = this.props;
 
     return (
       <div>
         <div>
           <span>May 26, 2017</span>
           <button>edit</button>
-          <button>delete</button>
+          <button onClick={removeNote.bind(null, this.props.index)}>delete</button>
         </div>
         {note}
       </div>
@@ -21,6 +22,7 @@ class Note extends Component {
 
 Note.propTypes = {
   details: PropTypes.object,
+  removeNote: PropTypes.func,
 }
 
 export default Note;
