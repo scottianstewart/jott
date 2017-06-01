@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Note from './components/Note.js';
+import './reset.css';
 import './App.css';
 
 class App extends Component {
@@ -8,7 +9,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      value: 'Start writing your note',
+      value: 'Start a Jott',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -43,16 +44,20 @@ class App extends Component {
     );
 
     return (
-      <div className="top">
-        <h1>JOTT</h1>
-        <form onSubmit={this.handleSubmit}>
-         <div className="text">
-          <textarea value={this.state.value} onChange={this.handleChange} />
-          <input type="submit" value="Submit" />
-         </div>
-         <div className="middle">Notes</div>
-        </form>
-        {notes}
+      <div className="app">
+        <div className="container">
+          <h1>JOTT</h1>
+          <form onSubmit={this.handleSubmit}>
+            <div className="form">
+              <textarea placeholder={this.state.value} onChange={this.handleChange} />
+              <input type="submit" value="Submit" />
+            </div>
+          </form>
+          <div className="middle">Notes</div>
+          <div className="notes__container">
+            {notes}
+          </div>
+        </div>
       </div>
     );
   }

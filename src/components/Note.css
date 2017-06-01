@@ -1,67 +1,38 @@
+.notes__container {
+  width: 100%;
+}
+
 .note {
-  width: 600px;
-  height: 80px;
-  border: 0px;
-  font-family: 'Roboto', sans-serif;
-  padding: 15px;
-  font-size: 16px;
-  z-index: 2;
-  color: #484a4c;
-  display: block;
+  width: 100%;
   background-color: white;
-  margin-top: 40px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+  margin-bottom: 24px;
+  padding: 24px;
+  color: #424242;
 }
 
-span {
-  position: absolute;
-  border: none;
-  font-size: 13px;
-  font-family: 'Roboto', sans-serif;
-  letter-spacing: 1px;
-  color: #484a4c;
-  padding: 20px 32px;
-  margin-right: 100px;
-  margin-bottom: 500px;
+.note__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.edit {
-  position: absolute;
-  border: none;
-  font-size: 12px;
-  font-family: 'Roboto', sans-serif;
-  letter-spacing: 2px;
-  color: black;
-  padding: 6px 16px;
-  margin-left: 460px;
-  margin-bottom: 250px;
-  display: block;
-  background-color: #F2F1EF;
-  color: white;
+.note__header span {
+  font-weight: 500;
+  font-size: 14px;
+  color: #C4C5C5;
 }
 
-.delete {
-  position: absolute;
-  border: none;
-  font-size: 12px;
-  font-family: 'Roboto', sans-serif;
-  letter-spacing: 2px;
-  color: black;
-  padding: 6px 16px;
-  margin-left: 530px;
-  margin-bottom: 250px;
-  display: block;
-  background-color: #F2F1EF;
-  color: white;
+.note__header button img {
+  height: 14px;
+  width: 14px;
 }
 
-p {
-  position: relative;
-  top: 30px;
-  left: 20px;
+.note__header button {
+  margin-right: 8px;
 }
 
-.fixed {
-  position: relative;
-  bottom: 60px;
-  right: 20px;
+.note__header button:last-child {
+  margin-right: 0;
 }
