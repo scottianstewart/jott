@@ -19,7 +19,7 @@
 }
 
 .note__header span {
-  font-weight: 500;
+  font-weight: 300;
   font-size: 14px;
   color: #C4C5C5;
 }
@@ -31,6 +31,7 @@
 
 .note__header button {
   margin-right: 8px;
+  cursor: pointer;
 }
 
 .note__header button:last-child {

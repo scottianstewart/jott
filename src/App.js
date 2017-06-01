@@ -1,62 +1,107 @@
 import React, { Component } from 'react';
+import Rebase from 're-base';
 import Note from './components/Note.js';
 import './reset.css';
 import './App.css';
 
-class App extends Component {
+var firebase = require('firebase/app');
+var database = require('firebase/database');
+var app = firebase.initializeApp({
+      apiKey: "AIzaSyCsec_emJE66qqmfVSUNHDbBvzSK7m6oLI",
+      authDomain: "jott-5f382.firebaseapp.com",
+      databaseURL: "https://jott-5f382.firebaseio.com",
+      storageBucket: "jott-5f382.appspot.com",
+      messagingSenderId: "689360057294"
+});
+var db = database(app);
+var base = Rebase.createClass(db);
 
+class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: 'Start a Jott',
+      notes: {},
+      value: '',
     };
 
+    this.createNote = this.createNote.bind(this);
+    this.renderNotes = this.renderNotes.bind(this);
+    this.removeNote = this.removeNote.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    let notes = [];
-    localStorage.setItem("notes", JSON.stringify(notes));
+    base.syncState('/', {
+      context: this,
+      state: 'notes',
+    })
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleChange(e) {
+    this.setState({value: e.target.value});
   }
 
-  handleSubmit(event) {
-    this.setState({value: event.target.value});
-    let retrievedData = localStorage.getItem("notes");
-    let notes = JSON.parse(retrievedData);
-    notes.push(this.state.value)
-    localStorage.setItem("notes", JSON.stringify(notes));
-    this.setState({value: ''})
+  addNote(note) {
+    let timestamp = (new Date()).getTime();
+
+    const notes = Object.assign({}, this.state.notes, { ['note-' + timestamp]: note })
+    this.setState({ notes })
+  }
+
+  createNote(event) {
     event.preventDefault();
+    let timestamp = (new Date()).getTime();
+
+    var note = {
+      note : this.refs.note.value,
+      timestamp : timestamp,
+    }
+
+    this.addNote(note)
+    this.refs.notepad.reset();
+  }
+
+  removeNote(key) {
+    const notes = Object.assign({}, this.state.notes, { [key]: null })
+    this.setState({ notes })
+  }
+
+  renderNotes(key) {
+    return (
+      <Note
+        key={key}
+        index={key}
+        details={this.state.notes[key]}
+        removeNote={this.removeNote}
+      />
+    )
   }
 
   render() {
-    let retrievedData = localStorage.getItem("notes");
-    let notesArray = JSON.parse(retrievedData);
-    let notes = [];
-    Object.entries(notesArray).forEach(
-      ([key, value]) => value !== null ? notes.push(<Note key={key} note={value}/>) : null
-    );
+    const { value } = this.state;
 
     return (
       <div className="app">
         <div className="container">
           <h1>JOTT</h1>
-          <form onSubmit={this.handleSubmit}>
-            <div className="form">
-              <textarea placeholder={this.state.value} onChange={this.handleChange} />
-              <input type="submit" value="Submit" />
-            </div>
+          <form className="form" ref="notepad" onSubmit={this.createNote}>
+            <textarea
+              type="text"
+              ref="note"
+              placeholder="Start a Jott..."
+              value={value}
+              onChange={this.handleChange}
+            />
+            <button
+              type="submit"
+              className={value.length > 0 ? 'button button--active' : 'button'}
+            >
+              Submit
+            </button>
           </form>
           <div className="middle">Notes</div>
-          <div className="notes__container">
-            {notes}
-          </div>
+          {Object.keys(this.state.notes).map(this.renderNotes)}
         </div>
       </div>
     );

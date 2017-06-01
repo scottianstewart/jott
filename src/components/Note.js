@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import './Note.css';
 import DeleteButton from '../assets/delete.svg';
 import EditButton from '../assets/edit.svg';
@@ -7,15 +8,16 @@ import EditButton from '../assets/edit.svg';
 class Note extends Component {
 
   render() {
-    const { note } = this.props;
+    const { note, timestamp } = this.props.details;
+    const { removeNote } = this.props;
 
     return (
       <div className="note">
           <div className="note__header">
-            <span>May 28, 2017</span>
+            <span>{moment(timestamp).format('MMMM Do YYYY, h:mm a')}</span>
             <div className="note__actions">
               <button><img src={EditButton} alt="button" /></button>
-              <button><img src={DeleteButton} alt="button" /></button>
+              <button onClick={removeNote.bind(null, this.props.index)}><img src={DeleteButton} alt="button" /></button>
             </div>
           </div>
           <p>{note}</p>
@@ -26,7 +28,8 @@ class Note extends Component {
 
 
 Note.propTypes = {
-  note: PropTypes.string,
+  details: PropTypes.object,
+  removeNote: PropTypes.func,
 }
 
 export default Note;
