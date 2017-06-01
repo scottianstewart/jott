@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Rebase from 're-base';
 import Note from './components/Note.js';
+import './reset.css';
 import './App.css';
 
 var firebase = require('firebase/app');
@@ -21,11 +22,13 @@ class App extends Component {
 
     this.state = {
       notes: {},
+      value: '',
     };
 
     this.createNote = this.createNote.bind(this);
     this.renderNotes = this.renderNotes.bind(this);
     this.removeNote = this.removeNote.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +36,10 @@ class App extends Component {
       context: this,
       state: 'notes',
     })
+  }
+
+  handleChange(e) {
+    this.setState({value: e.target.value});
   }
 
   addNote(note) {
@@ -72,14 +79,30 @@ class App extends Component {
   }
 
   render() {
+    const { value } = this.state;
+
     return (
-      <div>
-        <h1>Jott</h1>
-        <form ref="notepad" onSubmit={this.createNote}>
-          <textarea type="text" ref="note" placeholder="Start Typing..."/>
-          <button type="submit">Submit</button>
-        </form>
-        {Object.keys(this.state.notes).map(this.renderNotes)}
+      <div className="app">
+        <div className="container">
+          <h1>JOTT</h1>
+          <form className="form" ref="notepad" onSubmit={this.createNote}>
+            <textarea
+              type="text"
+              ref="note"
+              placeholder="Start a Jott..."
+              value={value}
+              onChange={this.handleChange}
+            />
+            <button
+              type="submit"
+              className={value.length > 0 ? 'button button--active' : 'button'}
+            >
+              Submit
+            </button>
+          </form>
+          <div className="middle">Notes</div>
+          {Object.keys(this.state.notes).map(this.renderNotes)}
+        </div>
       </div>
     );
   }
