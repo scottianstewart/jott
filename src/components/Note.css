@@ -1,0 +1,38 @@
+.notes__container {
+  width: 100%;
+}
+
+.note {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+  margin-bottom: 24px;
+  padding: 24px;
+  color: #424242;
+}
+
+.note__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.note__header span {
+  font-weight: 500;
+  font-size: 14px;
+  color: #C4C5C5;
+}
+
+.note__header button img {
+  height: 14px;
+  width: 14px;
+}
+
+.note__header button {
+  margin-right: 8px;
+}
+
+.note__header button:last-child {
+  margin-right: 0;
+}
