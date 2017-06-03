@@ -60,6 +60,7 @@ class App extends Component {
 
     this.addNote(note)
     this.refs.notepad.reset();
+    this.setState({ value: ''})
   }
 
   removeNote(key) {
