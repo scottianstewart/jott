@@ -9,6 +9,8 @@
   },
   "devDependencies": {
     "firebase": "^4.0.0",
+    "gh-pages": "^1.0.0",
+    "homepage": "https://scottianstewart.github.io/jott",
     "re-base": "^3.0.1",
     "react-scripts": "1.0.6"
   },
