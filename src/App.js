@@ -29,6 +29,7 @@ class App extends Component {
     this.renderNotes = this.renderNotes.bind(this);
     this.removeNote = this.removeNote.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +43,12 @@ class App extends Component {
     this.setState({value: e.target.value});
   }
 
+  handleKeyDown(e) {
+    if (e.keyCode === 13) {
+      this.createNote();
+    }
+  }
+
   addNote(note) {
     let timestamp = (new Date()).getTime();
 
@@ -50,7 +57,10 @@ class App extends Component {
   }
 
   createNote(event) {
-    event.preventDefault();
+    if(event) {
+      event.preventDefault();
+    }
+
     let timestamp = (new Date()).getTime();
 
     var note = {
@@ -93,6 +103,7 @@ class App extends Component {
               placeholder="Start a Jott..."
               value={value}
               onChange={this.handleChange}
+              onKeyDown={this.handleKeyDown}
             />
             <button
               type="submit"
