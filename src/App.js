@@ -46,6 +46,7 @@ class App extends Component {
   handleKeyDown(e) {
     if (e.keyCode === 13) {
       this.createNote();
+      if(e.preventDefault) e.preventDefault(); 
     }
   }
 
@@ -69,7 +70,6 @@ class App extends Component {
     }
 
     this.addNote(note)
-    this.refs.notepad.reset();
     this.setState({ value: ''})
   }
 
