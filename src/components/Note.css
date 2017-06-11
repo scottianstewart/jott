@@ -18,6 +18,27 @@
   margin-bottom: 20px;
 }
 
+.note__author {
+  display: flex;
+  align-items: center;
+}
+
+.note__avatar {
+  display: flex;
+  align-items: center;
+}
+
+.note__avatar img {
+  height: 28px;
+  width: 28px;
+  margin-right: 16px;
+}
+
+.note__avatar span {
+  margin-right: 20px;
+  font-weight: 500;
+}
+
 .note__header span {
   font-weight: 300;
   font-size: 14px;

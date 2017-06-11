@@ -3,8 +3,7 @@ import Rebase from 're-base';
 import Note from './components/Note.js';
 import './reset.css';
 import './App.css';
-
-var firebase = require('firebase/app');
+import firebase from 'firebase'
 var database = require('firebase/database');
 var app = firebase.initializeApp({
       apiKey: "AIzaSyCsec_emJE66qqmfVSUNHDbBvzSK7m6oLI",
@@ -23,6 +22,10 @@ class App extends Component {
     this.state = {
       notes: {},
       value: '',
+      uid: '',
+      displayName: '',
+      photoURL: '',
+      dropdownActive: false,
     };
 
     this.createNote = this.createNote.bind(this);
@@ -30,6 +33,17 @@ class App extends Component {
     this.removeNote = this.removeNote.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.authHandler = this.authHandler.bind(this);
+    this.toggleDropdown = this.toggleDropdown.bind(this);
+  }
+
+  componentWillMount() {
+    let uid = localStorage.getItem('uid');
+    let displayName = localStorage.getItem('displayName');
+    let photoURL = localStorage.getItem('photoURL');
+    this.setState({uid: uid})
+    this.setState({displayName: displayName})
+    this.setState({photoURL: photoURL})
   }
 
   componentDidMount() {
@@ -39,6 +53,46 @@ class App extends Component {
     })
   }
 
+  authenticate(type) {
+    let provider = "";
+
+    if(type === 'facebook') {
+      provider = new firebase.auth.FacebookAuthProvider();
+      provider.addScope('user_birthday');
+    }
+
+    if(type === 'twitter') {
+      provider = new firebase.auth.TwitterAuthProvider();
+    }
+
+    firebase.auth().signInWithPopup(provider).then(this.authHandler);
+  }
+
+  authHandler(authData) {
+      localStorage.setItem('uid', authData.user.uid);
+      localStorage.setItem('displayName', authData.user.displayName);
+      localStorage.setItem('photoURL', authData.user.photoURL);
+      this.setState({uid: authData.user.uid});
+      this.setState({displayName: authData.user.displayName});
+      this.setState({photoURL: authData.user.photoURL});
+  }
+
+  logOut() {
+    firebase.auth().signOut().then(function() {
+      this.setState({uid: null});
+      localStorage.setItem('uid', null);
+    }.bind(this));
+  }
+
+  renderLogin() {
+    return (
+      <div className="app container">
+        <button onClick={this.authenticate.bind(this, 'facebook')}>Login With Facebook</button>
+        <button onClick={this.authenticate.bind(this, 'twitter')}>Login With Twitter</button>
+      </div>
+    )
+  }
+
   handleChange(e) {
     this.setState({value: e.target.value});
   }
@@ -46,7 +100,7 @@ class App extends Component {
   handleKeyDown(e) {
     if (e.keyCode === 13) {
       this.createNote();
-      if(e.preventDefault) e.preventDefault(); 
+      if(e.preventDefault) e.preventDefault();
     }
   }
 
@@ -67,6 +121,8 @@ class App extends Component {
     var note = {
       note : this.refs.note.value,
       timestamp : timestamp,
+      author : this.state.displayName,
+      photo : this.state.photoURL,
     }
 
     this.addNote(note)
@@ -89,13 +145,40 @@ class App extends Component {
     )
   }
 
+  toggleDropdown() {
+    this.setState({ dropdownActive: !this.state.dropdownActive})
+  }
+
   render() {
+    let logoutButton = <button onClick={this.logOut.bind(this)}>Log Out</button>
     const { value } = this.state;
+
+    if(!this.state.uid) {
+      return this.renderLogin()
+    }
+
+    // if(this.state.uid !== this.state.owner) {
+    //   return <div>Sorry, you aren't the owner {logoutButton}</div>
+    // }
 
     return (
       <div className="app">
         <div className="container">
-          <h1>JOTT</h1>
+          <div className="header">
+            <h1>JOTT</h1>
+            <div className="account" onClick={this.toggleDropdown}>
+              <div className="avatar">
+                <img src={this.state.photoURL} alt="avatar"/>
+                <span>{this.state.displayName}</span>
+                <div className="arrow-down" />
+              </div>
+              {this.state.dropdownActive ? (
+                <div className="account-dropdown">
+                  {logoutButton}
+                </div>
+              ) : null}
+            </div>
+          </div>
           <form className="form" ref="notepad" onSubmit={this.createNote}>
             <textarea
               type="text"
@@ -113,7 +196,7 @@ class App extends Component {
             </button>
           </form>
           <div className="middle">Notes</div>
-          {Object.keys(this.state.notes).map(this.renderNotes)}
+          {Object.keys(this.state.notes).map(this.renderNotes).reverse()}
         </div>
       </div>
     );
