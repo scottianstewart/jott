@@ -4,7 +4,8 @@ import Note from './components/Note.js';
 import './reset.css';
 import './App.css';
 
-var firebase = require('firebase/app');
+// var firebase = require('firebase/app');
+import firebase from 'firebase'
 var database = require('firebase/database');
 var app = firebase.initializeApp({
       apiKey: "AIzaSyCsec_emJE66qqmfVSUNHDbBvzSK7m6oLI",
@@ -16,6 +17,12 @@ var app = firebase.initializeApp({
 var db = database(app);
 var base = Rebase.createClass(db);
 
+var provider = new firebase.auth.FacebookAuthProvider();
+provider.addScope('user_birthday');
+provider.setCustomParameters({
+  'display': 'popup'
+});
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +30,8 @@ class App extends Component {
     this.state = {
       notes: {},
       value: '',
+      uid: '',
+      displayName: '',
     };
 
     this.createNote = this.createNote.bind(this);
@@ -39,6 +48,29 @@ class App extends Component {
     })
   }
 
+  loginWithFacebook() {
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      var token = result.credential.accessToken;
+      this.setState({uid: token});
+      this.setState({displayName: result.user.displayName})
+      console.log(result)
+    }.bind(this));
+  }
+
+  logOut() {
+    firebase.auth().signOut().then(function() {
+      this.setState({uid: null});
+    }.bind(this));
+  }
+
+  renderLogin() {
+    return (
+      <div>
+        <button onClick={this.loginWithFacebook.bind(this, 'facebook')}>Login With Facebook</button>
+      </div>
+    )
+  }
+
   handleChange(e) {
     this.setState({value: e.target.value});
   }
@@ -46,7 +78,7 @@ class App extends Component {
   handleKeyDown(e) {
     if (e.keyCode === 13) {
       this.createNote();
-      if(e.preventDefault) e.preventDefault(); 
+      if(e.preventDefault) e.preventDefault();
     }
   }
 
@@ -90,12 +122,23 @@ class App extends Component {
   }
 
   render() {
+    let logoutButton = <button onClick={this.logOut.bind(this)}>Log Out!</button>
     const { value } = this.state;
+
+    if(!this.state.uid) {
+      return this.renderLogin()
+    }
+
+    // if(this.state.uid !== this.state.owner) {
+    //   return <div>Sorry, you aren't the owner {logoutButton}</div>
+    // }
 
     return (
       <div className="app">
         <div className="container">
+          {logoutButton}
           <h1>JOTT</h1>
+          <h1>{this.state.displayName}</h1>
           <form className="form" ref="notepad" onSubmit={this.createNote}>
             <textarea
               type="text"
