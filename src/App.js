@@ -3,7 +3,7 @@ import Rebase from 're-base';
 import Note from './components/Note.js';
 import './reset.css';
 import './App.css';
-import firebase from 'firebase'
+import firebase from 'firebase';
 var database = require('firebase/database');
 var app = firebase.initializeApp({
       apiKey: "AIzaSyCsec_emJE66qqmfVSUNHDbBvzSK7m6oLI",
