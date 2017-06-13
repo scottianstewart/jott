@@ -4,6 +4,7 @@ import Note from './components/Note.js';
 import './reset.css';
 import './App.css';
 import firebase from 'firebase'
+import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
 var database = require('firebase/database');
 var app = firebase.initializeApp({
       apiKey: "AIzaSyCsec_emJE66qqmfVSUNHDbBvzSK7m6oLI",
@@ -14,6 +15,7 @@ var app = firebase.initializeApp({
 });
 var db = database(app);
 var base = Rebase.createClass(db);
+
 
 class App extends Component {
   constructor(props) {
@@ -198,6 +200,9 @@ class App extends Component {
           <div className="middle">Notes</div>
           {Object.keys(this.state.notes).map(this.renderNotes).reverse()}
         </div>
+        <Router>
+          <Route path="/note" render={()=> <div>hello</div>}/>
+        </Router>
       </div>
     );
   }
