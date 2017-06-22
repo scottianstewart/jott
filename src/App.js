@@ -138,12 +138,14 @@ class App extends Component {
 
   renderNotes(key) {
     return (
-      <Note
-        key={key}
-        index={key}
-        details={this.state.notes[key]}
-        removeNote={this.removeNote}
-      />
+      <Link to="/note" key={key}>
+        <Note
+          key={key}
+          index={key}
+          details={this.state.notes[key]}
+          removeNote={this.removeNote}
+        />
+      </Link>
     )
   }
 
@@ -164,46 +166,50 @@ class App extends Component {
     // }
 
     return (
-      <div className="app">
-        <div className="container">
-          <div className="header">
-            <h1>JOTT</h1>
-            <div className="account" onClick={this.toggleDropdown}>
-              <div className="avatar">
-                <img src={this.state.photoURL} alt="avatar"/>
-                <span>{this.state.displayName}</span>
-                <div className="arrow-down" />
-              </div>
-              {this.state.dropdownActive ? (
-                <div className="account-dropdown">
-                  {logoutButton}
+      <Router>
+        <div>
+          <Route exact path='/' render={()=>
+          <div className="app">
+            <div className="container">
+              <div className="header">
+                <h1>JOTT</h1>
+                <div className="account" onClick={this.toggleDropdown}>
+                  <div className="avatar">
+                    <img src={this.state.photoURL} alt="avatar"/>
+                    <span>{this.state.displayName}</span>
+                    <div className="arrow-down" />
+                  </div>
+                  {this.state.dropdownActive ? (
+                    <div className="account-dropdown">
+                      {logoutButton}
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
+              <form className="form" ref="notepad" onSubmit={this.createNote}>
+                <textarea
+                  type="text"
+                  ref="note"
+                  placeholder="Start a Jott..."
+                  value={value}
+                  onChange={this.handleChange}
+                  onKeyDown={this.handleKeyDown}
+                />
+                <button
+                  type="submit"
+                  className={value.length > 0 ? 'button button--active' : 'button'}
+                >
+                  Submit
+                </button>
+              </form>
+              <div className="middle">Notes</div>
+              {Object.keys(this.state.notes).map(this.renderNotes).reverse()}
             </div>
           </div>
-          <form className="form" ref="notepad" onSubmit={this.createNote}>
-            <textarea
-              type="text"
-              ref="note"
-              placeholder="Start a Jott..."
-              value={value}
-              onChange={this.handleChange}
-              onKeyDown={this.handleKeyDown}
-            />
-            <button
-              type="submit"
-              className={value.length > 0 ? 'button button--active' : 'button'}
-            >
-              Submit
-            </button>
-          </form>
-          <div className="middle">Notes</div>
-          {Object.keys(this.state.notes).map(this.renderNotes).reverse()}
+        } />
+        <Route exact path="/note" render={()=> <div>hello</div>}/>
         </div>
-        <Router>
-          <Route path="/note" render={()=> <div>hello</div>}/>
-        </Router>
-      </div>
+      </Router>
     );
   }
 }
