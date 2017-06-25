@@ -45,11 +45,6 @@
   color: #C4C5C5;
 }
 
-.note__header button img {
-  height: 14px;
-  width: 14px;
-}
-
 .note__header button {
   margin-right: 8px;
   cursor: pointer;

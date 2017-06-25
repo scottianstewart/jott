@@ -28,13 +28,6 @@ class App extends Component {
       dropdownActive: false,
     };
 
-    this.createNote = this.createNote.bind(this);
-    this.renderNotes = this.renderNotes.bind(this);
-    this.removeNote = this.removeNote.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.authHandler = this.authHandler.bind(this);
-    this.toggleDropdown = this.toggleDropdown.bind(this);
   }
 
   componentWillMount() {
@@ -68,7 +61,7 @@ class App extends Component {
     firebase.auth().signInWithPopup(provider).then(this.authHandler);
   }
 
-  authHandler(authData) {
+  authHandler = (authData) => {
       localStorage.setItem('uid', authData.user.uid);
       localStorage.setItem('displayName', authData.user.displayName);
       localStorage.setItem('photoURL', authData.user.photoURL);
@@ -93,25 +86,25 @@ class App extends Component {
     )
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     this.setState({value: e.target.value});
   }
 
-  handleKeyDown(e) {
+  handleKeyDown = (e) => {
     if (e.keyCode === 13) {
       this.createNote();
       if(e.preventDefault) e.preventDefault();
     }
   }
 
-  addNote(note) {
+  addNote = (note) => {
     let timestamp = (new Date()).getTime();
 
     const notes = Object.assign({}, this.state.notes, { ['note-' + timestamp]: note })
     this.setState({ notes })
   }
 
-  createNote(event) {
+  createNote = (event) => {
     if(event) {
       event.preventDefault();
     }
@@ -129,12 +122,12 @@ class App extends Component {
     this.setState({ value: ''})
   }
 
-  removeNote(key) {
+  removeNote = (key) => {
     const notes = Object.assign({}, this.state.notes, { [key]: null })
     this.setState({ notes })
   }
 
-  renderNotes(key) {
+  renderNotes = (key) => {
     return (
       <Note
         key={key}
@@ -145,7 +138,7 @@ class App extends Component {
     )
   }
 
-  toggleDropdown() {
+  toggleDropdown = () => {
     this.setState({ dropdownActive: !this.state.dropdownActive})
   }
 
