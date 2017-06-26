@@ -1,51 +1,41 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
+// import PropTypes from 'prop-types';
+// import moment from 'moment';
 import './Note.css';
 import DeleteButton from '../assets/delete.svg';
 import FavoriteButton from '../assets/favorite.svg';
-// import FavoriteButtonFull from '../assets/favoriteFull.svg';
+import FavoriteButtonFull from '../assets/favoriteFull.svg';
 
 class Note extends Component {
 
   favoriteNote = () => {
-    return console.log('hi');
+    this.state.dispatch(this.props.favorite())
   }
 
   render() {
-    const { note, timestamp, author, photo } = this.props.details;
-    const { removeNote } = this.props;
+    const { note, i } = this.props;
 
     return (
       <div className="note">
           <div className="note__header">
             <div className="note__author">
               <div className="note__avatar">
-                <img src={photo} alt="avatar" />
-                <span>{author}</span>
+                <img src={note.photo} alt="avatar" />
               </div>
-              <span>{moment(timestamp).format('MMMM Do YYYY, h:mm a')}</span>
             </div>
             <div className="note__actions">
-              <button onClick={()=>this.favoriteNote()}>
-                <img src={FavoriteButton} alt="button" />
+              <button onClick={()=>this.props.toggleFavorite(i)}>
+                <img src={note.favorite === true ? FavoriteButtonFull : FavoriteButton} alt="button" />
               </button>
-              <button onClick={removeNote.bind(null, this.props.index)}>
+              <button onClick={()=>this.props.removeNote(i)}>
                 <img src={DeleteButton} alt="button" />
               </button>
             </div>
           </div>
-          <p>{note}</p>
+          <p>{note.note}</p>
       </div>
     );
   }
-}
-
-
-Note.propTypes = {
-  author: PropTypes.string,
-  details: PropTypes.object,
-  removeNote: PropTypes.func,
 }
 
 export default Note;

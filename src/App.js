@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import * as actionCreators from './actions/actionCreators';
 import Rebase from 're-base';
 import Note from './components/Note.js';
 import './reset.css';
 import './App.css';
+import { connect } from 'react-redux';
 import firebase from 'firebase';
 var database = require('firebase/database');
 var app = firebase.initializeApp({
@@ -20,7 +23,6 @@ class App extends Component {
     super(props);
 
     this.state = {
-      notes: {},
       value: '',
       uid: '',
       displayName: '',
@@ -97,12 +99,12 @@ class App extends Component {
     }
   }
 
-  addNote = (note) => {
-    let timestamp = (new Date()).getTime();
-
-    const notes = Object.assign({}, this.state.notes, { ['note-' + timestamp]: note })
-    this.setState({ notes })
-  }
+  // addNote = (note) => {
+  //   let timestamp = (new Date()).getTime();
+  //
+  //   const notes = Object.assign({}, this.state.notes, { ['note-' + timestamp]: note })
+  //   this.setState({ notes })
+  // }
 
   createNote = (event) => {
     if(event) {
@@ -118,24 +120,8 @@ class App extends Component {
       photo : this.state.photoURL,
     }
 
-    this.addNote(note)
+    this.props.addNote(note)
     this.setState({ value: ''})
-  }
-
-  removeNote = (key) => {
-    const notes = Object.assign({}, this.state.notes, { [key]: null })
-    this.setState({ notes })
-  }
-
-  renderNotes = (key) => {
-    return (
-      <Note
-        key={key}
-        index={key}
-        details={this.state.notes[key]}
-        removeNote={this.removeNote}
-      />
-    )
   }
 
   toggleDropdown = () => {
@@ -149,10 +135,6 @@ class App extends Component {
     if(!this.state.uid) {
       return this.renderLogin()
     }
-
-    // if(this.state.uid !== this.state.owner) {
-    //   return <div>Sorry, you aren't the owner {logoutButton}</div>
-    // }
 
     return (
       <div className="app">
@@ -189,11 +171,33 @@ class App extends Component {
             </button>
           </form>
           <div className="middle">Notes</div>
-          {Object.keys(this.state.notes).map(this.renderNotes).reverse()}
+          {this.props.notes ? this.props.notes.map((note, i) => {
+              return (
+                <Note
+                  key={i}
+                  i={i}
+                  note={note}
+                  favorite={note.favorite}
+                  {...this.props}
+                />
+              )
+            }
+          ) : null}
         </div>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    notes: state.notes,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(actionCreators, dispatch)
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

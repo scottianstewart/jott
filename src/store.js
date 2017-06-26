@@ -1,11 +1,8 @@
-import { createStore, compse } from 'redux';
-
+import { createStore } from 'redux';
 import rootReducer from './reducers/index';
 
-import notes from './data/notes';
-
 const defaultState = {
-  notes : notes,
+  notes : [],
 };
 
 const store = createStore(rootReducer, defaultState);

@@ -48,6 +48,7 @@
 .note__header button {
   margin-right: 8px;
   cursor: pointer;
+  outline: 0;
 }
 
 .note__header button:last-child {

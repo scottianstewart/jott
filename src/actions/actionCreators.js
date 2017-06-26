@@ -1,29 +1,27 @@
-// favorite
+// toggle favorite
 
-export function favorite(index) {
+export function toggleFavorite(index) {
   return {
-    type: 'ADD_FAVORITE',
+    type: 'TOGGLE_FAVORITE',
     index
   }
 }
 
 // add note
 
-export function addNote(noteID, author, note) {
+export function addNote(note, i) {
   return {
     type: 'ADD_NOTE',
-    noteID,
-    author,
     note,
+    i,
   }
 }
 
 // remove note
 
-export function removeNote(noteID, i) {
+export function removeNote(i) {
   return {
     type: 'REMOVE_NOTE',
-    noteID,
     i
   }
 }
